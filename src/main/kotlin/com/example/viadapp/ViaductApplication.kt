@@ -32,8 +32,9 @@ fun main(argv: Array<String>) {
     )
 
     // Create an execution input
-    val executionInput = ExecutionInput(
-        query = (
+    val executionInput = ExecutionInput.create(
+        schemaId = SCHEMA_ID,
+        operationText = (
             argv.getOrNull(0)
                 ?: """
                      query {
@@ -42,8 +43,6 @@ fun main(argv: Array<String>) {
                 """.trimIndent()
         ),
         variables = emptyMap(),
-        requestContext = object {},
-        schemaId = SCHEMA_ID
     )
 
     // Run the query
