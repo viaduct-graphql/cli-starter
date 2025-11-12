@@ -1,38 +1,45 @@
-// tag::gradle-config[37] build gradle of viaduct.
-// tag::plugins-config[7] How plugins for viaduct are setup.
 plugins {
-    // Use a Kotlin version compatible with your Gradle version
-    // Gradle 8.x: Kotlin 1.9.x or 2.x | Gradle 9.x: Kotlin 2.0+
-    kotlin("jvm") version "1.9.24"
+    alias(libs.plugins.kotlinJvm)
+    alias(libs.plugins.ktor)
     alias(libs.plugins.viaduct.application)
-    alias(libs.plugins.viaduct.module)
-    application
-}
-
-viaductApplication {
-    modulePackagePrefix.set("com.example.viadapp")
-}
-
-viaductModule {
-    modulePackageSuffix.set("resolvers")
-}
-
-dependencies {
-    implementation("ch.qos.logback:logback-classic:1.3.7")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
-
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.9.10")
-
-    testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.2")
-    testImplementation("org.junit.platform:junit-platform-launcher:1.9.2")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2")
+    jacoco
 }
 
 application {
     mainClass.set("com.example.viadapp.ViaductApplicationKt")
 }
 
-tasks.test {
+viaductApplication {
+    modulePackagePrefix.set("com.example.viadapp")
+}
+
+
+dependencies {
+    implementation(libs.jackson.module.kotlin)
+    implementation(libs.kotlin.reflect)
+    implementation(libs.kotlinx.coroutines.reactor)
+    implementation(libs.reactor.core)
+
+    implementation(libs.ktor.server.core.jvm)
+    implementation(libs.ktor.server.jetty)
+    implementation(libs.ktor.server.content.negotiation)
+    implementation(libs.ktor.serialization.jackson)
+    implementation(libs.ktor.server.core)
+    implementation(libs.ktor.server.config.yaml)
+
+    implementation(project(":resolvers"))
+
+    testImplementation(libs.ktor.server.test.host)
+    testImplementation(libs.kotlin.test.junit)
+    testImplementation(libs.junit.jupiter)
+
+    testRuntimeOnly(libs.junit.platform.launcher)
+
+    testImplementation(libs.kotest.runner.junit)
+    testImplementation(libs.kotest.assertions.core)
+    testImplementation(libs.kotest.assertions.json)
+}
+
+tasks.withType<Test> {
     useJUnitPlatform()
 }

@@ -1,4 +1,4 @@
-// tag::dependency-resolution[30] How to setup settings.gradle.kts on a new viaduct application
+rootProject.name = "viaduct-ktor-starter"
 
 val viaductVersion: String by settings
 
@@ -27,3 +27,5 @@ dependencyResolutionManagement {
         }
     }
 }
+
+include(":resolvers")
