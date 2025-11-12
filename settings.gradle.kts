@@ -1,5 +1,3 @@
-rootProject.name = "viaduct-ktor-starter"
-
 val viaductVersion: String by settings
 
 // When part of composite build, use local gradle-plugins
@@ -28,4 +26,6 @@ dependencyResolutionManagement {
     }
 }
 
-include(":resolvers")
+include(":modules:filmography")
+include(":common")
+include(":modules:universe")
