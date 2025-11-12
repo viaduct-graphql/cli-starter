@@ -1,75 +1,38 @@
+// tag::gradle-config[37] build gradle of viaduct.
+// tag::plugins-config[7] How plugins for viaduct are setup.
 plugins {
-    alias(libs.plugins.kotlinJvm)
-    alias(libs.plugins.kotlinKapt)
-    alias(libs.plugins.micronautApplication)
+    // Use a Kotlin version compatible with your Gradle version
+    // Gradle 8.x: Kotlin 1.9.x or 2.x | Gradle 9.x: Kotlin 2.0+
+    kotlin("jvm") version "1.9.24"
     alias(libs.plugins.viaduct.application)
-    jacoco
+    alias(libs.plugins.viaduct.module)
+    application
 }
 
 viaductApplication {
-    grtPackageName.set("viaduct.api.grts")
-    modulePackagePrefix.set("com.example.starwars")
+    modulePackagePrefix.set("com.example.viadapp")
 }
 
-micronaut {
-    runtime("netty")
-    testRuntime("junit")
-    processing {
-        incremental(true)
-    }
-}
-
-configurations.all {
-    resolutionStrategy {
-        force(libs.guice)
-    }
+viaductModule {
+    modulePackageSuffix.set("resolvers")
 }
 
 dependencies {
-    implementation(libs.jackson.module.kotlin)
-    implementation(libs.kotlin.reflect)
-    implementation(libs.kotlinx.coroutines.reactor)
-    implementation(libs.reactor.core)
-    implementation(libs.micronaut.graphql)
-    implementation(libs.micronaut.http.server.netty)
-    implementation(libs.micronaut.jackson.databind)
-    implementation(libs.micronaut.inject)
+    implementation("ch.qos.logback:logback-classic:1.3.7")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
 
-    kapt(libs.micronaut.inject.java)
-    kapt(libs.micronaut.inject.kotlin)
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.9.10")
 
-    runtimeOnly(libs.logback.classic)
-    implementation(project(":common"))
-    runtimeOnly(project(":modules:filmography"))
-    runtimeOnly(project(":modules:universe"))
-
-    testImplementation(libs.micronaut.test.kotest5)
-    testImplementation(libs.junit.jupiter)
-    testImplementation(libs.assertj.core)
-
-    testRuntimeOnly(libs.junit.platform.launcher)
-
-    testImplementation(project(":modules:filmography"))
-    testImplementation(project(":modules:universe"))
-    testImplementation(libs.kotest.runner.junit)
-    testImplementation(libs.kotest.assertions.core)
-    testImplementation(libs.kotest.assertions.json)
-    testImplementation(libs.viaduct.engine.wiring)
-    testImplementation(libs.micronaut.http.client)
-    testImplementation(testFixtures(libs.viaduct.tenant.api))
+    testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.2")
+    testImplementation("org.junit.platform:junit-platform-launcher:1.9.2")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2")
 }
 
 application {
-    mainClass = "com.example.starwars.service.ApplicationKt"
+    mainClass.set("com.example.viadapp.ViaductApplicationKt")
 }
 
-tasks.withType<Test> {
+tasks.test {
     useJUnitPlatform()
 }
-
-tasks.withType<JavaExec> {
-    jvmArgs = listOf(
-        "--add-opens", "java.base/java.lang=ALL-UNNAMED"
-    )
-}
-

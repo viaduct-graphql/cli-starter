@@ -1,3 +1,5 @@
+// tag::dependency-resolution[30] How to setup settings.gradle.kts on a new viaduct application
+
 val viaductVersion: String by settings
 
 // When part of composite build, use local gradle-plugins
@@ -25,7 +27,3 @@ dependencyResolutionManagement {
         }
     }
 }
-
-include(":modules:filmography")
-include(":common")
-include(":modules:universe")
