@@ -7,7 +7,7 @@
 
 ## Quick Start
 
-Check out the [Getting Started](https://airbnb.io/viaduct/docs/getting_started/) docs.
+Check out the [Getting Started](https://viaduct.airbnb.tech/docs/getting_started/) docs.
 
 ### Run the demo
 
