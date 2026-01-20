@@ -22,7 +22,7 @@ dependencyResolutionManagement {
     }
     versionCatalogs {
         create("libs") {
-            // This injects a dynamic value that your TOML can reference.
+            from(files("gradle/viaduct.versions.toml"))
             version("viaduct", viaductVersion)
         }
     }
